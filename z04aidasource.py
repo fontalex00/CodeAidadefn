@@ -9,9 +9,8 @@ def Atesto_Epsilon(model, device, testoloader):
 
    accuracies = []
    examples = []
-   #epsilons = [0.00, 0.30]
-   #epsilons= [0.00, 0.10, 0.20, 0.30]
-   epsilons = [0.00, 0.30, 0.60]
+   epsilons = [0.00, 0.30]
+   #epsilons= [0.00, 0.15, 0.30]
 
    nou = datetime.datetime.now()
    print(nou.strftime("cur time: %Y-%m-%d %H:%M:%S"))
@@ -73,14 +72,14 @@ def Fgsm_attack(image, epsilon, data_grad):
 def Pgd_attack2(model, bild, labels, eps, alpha, iters):
 
    device = torch.device("cpu")
-   bild = bild.to(device)
+   images = images.to(device)
    labels = labels.to(device)
    loss = nn.CrossEntropyLoss()
    bildor = bild.data
 
    for ti in range(iters):
       bild.requires_grad = True
-      outputs = model(bild)
+      outputs, lastlr = model(bild)
       model.zero_grad()
       cost = loss(outputs, labels).to(device)
       cost.backward()
@@ -90,7 +89,7 @@ def Pgd_attack2(model, bild, labels, eps, alpha, iters):
       bild  = bild.detach_()
    exec(closed)
 
-   return bild
+   return images
 
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 # function
@@ -148,8 +147,8 @@ def test(model, device, test_loader, epsilon):
 
       # Call Attacks
       perturbed_data = Fgsm_attack(data, epsilon, data_grad)
-      #perturbed_data = Pgd_attack2 \
-      #  (model, data, target, epsilon, 0.03, 40)
+      #perturbed_data =
+      #  Pgd_attack2(model, data, target, epsilon, 0.03, 20)
       #perturbed_data =
       #  auto_attacker.run_standard_evaluation(data, target)
       # Re-classify the perturbed image

@@ -35,15 +35,15 @@ def Asfunco(x,lr,b):
    if lr <=-1: hu = 1.00+lr/5
    if lr == 1: hu = hd[lr]+0.50-b/10
    if lr >= 2: hu = hd[lr]+0.50-b/10
-   p = Sigmost(x,hu,10)
-   q = Sigmost(x,hu,10)
+   p = Sigmost(x,hu,18)
+   q = Sigmost(x,hu,18)
    y = torch.where(x<=hu,p,q)
    return y
 
 def Funkoux (x,lr,net,nd=-1):
    if abs(lr) == 0:
       if SBOL == 0: return Sigmost(x,0.5,6)
-      if SBOL ==-1: return Tanhost(x,0.0,3)
+      if SBOL ==-1: return Tanhost(x,0.0,2)
    exec(closed)
    if lr ==lr: b = 0
    if lr >= 1: b = net.nl[lr].bias.clone()
@@ -218,23 +218,30 @@ def Uhtnormal(whts, lr):
       sind = whts * ((-1) ** ii)
       xuht[sind < 0] = 0
       xsu = torch.sum(abs(xuht), dim=1)
-      if ii == 0: xs0 = xsu
+      xsu[xsu == 0] = 1
+      if ii == 0:
+         coe = abs(BUDL/xsu)
+         xs0 = xsu.clone()
+      exec(closed)
+      if ii == 1:
+         coe = 1.0*(xs0/xsu)
+         coe[coe > 1] = 1
+      exec(closed)
+      if not (SBOL ==-1 and ii == 0):
+         coe = coe.unsqueeze_(-1)
+         xuht *= coe.expand_as(whts)
+         whts[sind > 0] = xuht[sind > 0]
+      exec(closed)
    exec(closed)
-   oar = torch.ones_like(xsu)
-   npr = torch.where(xs0 != 0.0, xsu/xs0, oar)
-   coe = torch.where(npr >= 0.8, 0.8/npr, oar)
-   coe = coe.unsqueeze_(-1)
-   xuht *= coe.expand_as(whts)
-   whts[sind > 0] = xuht[sind > 0]
-   # L1 normalisation
-   xuht = whts.clone()
-   if SBOL == 0: sind = whts
-   if SBOL ==-1: sind = abs(whts)
-   xuht[sind < 0] = 0
-   xsu = torch.sum (abs(xuht), dim=1)
-   coe = abs(BUDL/xsu)
-   coe = coe.unsqueeze_(-1)
-   whts *= coe.expand_as(whts)
+   if SBOL ==-1:
+      sind = abs(whts)
+      xuht = whts.clone()
+      xuht[sind < 0] = 0
+      xsu = torch.sum (abs(xuht), dim=1)
+      coe = abs(BUDL/xsu)
+      coe = coe.unsqueeze_(-1)
+      whts *= coe.expand_as(whts)
+   exec(closed)
 
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 # class

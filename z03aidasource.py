@@ -9,9 +9,6 @@ def Bildschau(bild):
    plt.imshow(np.transpose(npbild, (1,2,0)))
    plt.show()
 
-def Bgaussian(x, mu, si):
-   return np.exp(-np.power(x - mu, 2.) / (2 * np.power(si, 2.)))
-
 def Bsinvoid(x):
    x [x <= 0.01] = 0.01
    x [x >= 0.99] = 0.99
@@ -333,7 +330,7 @@ def Printo_Consoleb (dtime,lastlr,output):
       if pi == 9: consfn.write(" xxxxx_o")
    exec(closed)
    # duration
-   bstr = " durat (min): {:4.1f} ___\n\n\n\n"
+   bstr = " durat (min): {:4.1f} ___\n\n\n\n\n\n\n\n"
    consfn.write(bstr.format(dtime))
    consfn.write(content)
    consfn.close()

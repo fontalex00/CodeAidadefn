@@ -30,10 +30,10 @@ BOARDFN   = 'D:\\Dropbox\\CodeAidadefn\\Source\\cznordo.c'
 BUTCHSZA  = 200
 BUTCHEND  = (60000/BUTCHSZA)-1
 BLRATE    = 0.001
-SBOL      =-1.0
+SBOL      =-0.0
 BUDL      = 10.0
-EPOCHS    = 900
-HD        = [0,-0.20,-0.20,-0.20,-0.20]
+EPOCHS    = 00
+HD        = [0,-0.10,-0.10,-0.10,-0.10]
 UBIAS     = [0, 1.00, 2.00, 2.00, 1.00]
 LBIAS     = [0, 0.00, 0.00, 0.00, 0.00]
 
